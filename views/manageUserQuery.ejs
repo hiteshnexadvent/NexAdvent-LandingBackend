@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Blogs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eaeaea;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Sidebar width adjustment */
+    .main-content {
+      margin-left: 250px; /* Adjust according to your sidebar width */
+      padding: 40px 20px;
+      max-width: 1000px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    thead {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* tr:hover {
+      background-color: #f1f1f1;
+    } */
+
+    .no-data {
+      text-align: center;
+      padding: 20px;
+      color: #888;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    /* Responsive styles */
+    @media screen and (max-width: 768px) {
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        margin-bottom: 15px;
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        font-weight: bold;
+        color: #333;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Include reusable components -->
+  <%- include('header') %>
+  <%- include('sideBar') %>
+
+  <!-- Main content starts here -->
+  <div class="main-content">
+    <h1>Manage User Queries</h1>
+
+    <% if(query.length > 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>City</th>
+            <th>Company Name</th>
+            <th colspan="2">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% query.forEach(item => { %>
+              <td data-label="Title"><%= item.name %></td>
+              <td data-label="Title"><%= item.email %></td>
+              <td data-label="Title"><%= item.mobile %></td>
+              <td data-label="Title"><%= item.city %></td>
+              <td data-label="Paragraph One"><%= item.company %></td>
+                <td><a href="/admin/delete-query/<%= item._id%>"style="width: 80px; background-color: red;text-decoration: none;height: 40px;color: #000;display: inline-block;padding-top: 10px;padding-left: 18px;border-radius: 5px;">Delete</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="no-data">No queries available</div>
+    <% } %>
+  </div>
+
+</body>
+</html>
