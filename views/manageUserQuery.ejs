@@ -122,15 +122,21 @@
         </thead>
         <tbody>
           <% query.forEach(item => { %>
-              <td data-label="Title"><%= item.name %></td>
-              <td data-label="Title"><%= item.email %></td>
-              <td data-label="Title"><%= item.mobile %></td>
-              <td data-label="Title"><%= item.city %></td>
-              <td data-label="Paragraph One"><%= item.company %></td>
-                <td><a href="/admin/delete-query/<%= item._id%>"style="width: 80px; background-color: red;text-decoration: none;height: 40px;color: #000;display: inline-block;padding-top: 10px;padding-left: 18px;border-radius: 5px;">Delete</a>
-              </td>
-            </tr>
-          <% }) %>
+  <tr>
+    <td data-label="Name"><%= item.name %></td>
+    <td data-label="Email"><%= item.email %></td>
+    <td data-label="Mobile"><%= item.mobile %></td>
+    <td data-label="City"><%= item.city %></td>
+    <td data-label="Company Name"><%= item.company %></td>
+    <td>
+      <a href="/admin/delete-query/<%= item._id %>" 
+         style="width: 80px; background-color: red; text-decoration: none; height: 40px; color: #000; display: inline-block; padding-top: 10px; padding-left: 18px; border-radius: 5px;">
+         Delete
+      </a>
+    </td>
+  </tr>
+<% }) %>
+
         </tbody>
       </table>
     <% } else { %>
