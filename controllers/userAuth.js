@@ -70,3 +70,16 @@ exports.getManageQuery = async (req, res) => {
     }
   }
 };
+
+// ----------------- delete queries
+
+exports.deleteQuery = async (req, res) => {
+  try {
+    await userMong.findByIdAndDelete(req.params.id);
+    return res.redirect("/admin/manage-userquery");
+  } catch (error) {
+    return res.send(
+      '<script>alert("Unable to delete"); window.history.back();</script>'
+    );
+  }
+};

@@ -85,7 +85,75 @@ exports.getAdminDash=async (req,res) => {
 
 }
 
+// ------------------------------ admin Change Password
 
+exports.getChangePassword = (req, res) => {
+    
+    try {
+        
+        if (!req.session.adminEmail) {
+            return res.render('adminLogin');
+        } else {
+            return res.render('changePass');
+        }
+
+    } catch (error) {
+        console.log(error.message);
+    }
+
+}
+
+exports.postchangePassword = async (req, res) => {
+        
+        const { password, npassword, cnpassword } = req.body;
+
+        if (!password || !npassword || !cnpassword) {
+            return res.send('<script>alert("All fields are mandatory"); window.history.back();</script>');
+        }
+
+        if (npassword !== cnpassword) {
+            return res.send('<script>alert("Password and Confirm Password must be same"); window.history.back();</script>');
+        }
+
+        const email = req.session.adminEmail;
+
+        if (!email) {
+            return res.render('adminLogin');
+    }
+    
+    try {
+
+        const adminn = await adminMong.findOne({ email: email.email });
+
+        if (!adminn) {
+            return res.send('<script>alert("Old Password is incorrect"); window.history.back();</script>');
+        }
+
+        const isMatch = await bcrypt.compare(password, adminn.pass);
+
+        if (!isMatch) {
+            return res.send('<script>alert("Old Password is Incorrect"); window.history.back();</script>');
+        }
+
+        const hashedNewPass = await bcrypt.hash(npassword, 10);
+
+        adminn.pass = hashedNewPass;
+
+        await adminn.save();
+
+        return res.send('<script>alert("Password Changed Successfully"); window.history.back();</script>');
+
+    } catch (error) {        
+        return res.send(error.message);
+    }
+
+}
+
+// -------------------------------- forget password
+
+exports.getForgetPass = async (req, res) => {
+    return res.render('forgetPass');
+}
 
 // --------------------------------- signout
 
