@@ -109,6 +109,9 @@
   <div class="main-content">
     <h1>Manage User Queries</h1>
 
+    <button onclick="downloadCSV()" 
+        style="margin-bottom:20px; padding:10px 20px; background: linear-gradient(90deg, #2193b0, #6dd5ed); color:#fff; border:none; border-radius:5px; cursor:pointer;">Download CSV</button>
+
     <% if(query.length > 0) { %>
       <table>
         <thead>
@@ -138,12 +141,53 @@
   </tr>
 <% }) %>
 
+
+
         </tbody>
       </table>
+    
+
     <% } else { %>
       <div class="no-data">No queries available</div>
     <% } %>
   </div>
+
+
+  <script>
+function downloadCSV() {
+  let table = document.querySelector("table");
+  let rows = table.querySelectorAll("thead tr, tbody tr");
+  let csv = [];
+
+  rows.forEach(row => {
+  let cols = row.querySelectorAll("td, th");
+  let data = [];
+
+  cols.forEach((col, i) => {
+    if (i < cols.length - 1) { 
+      let text = col.innerText.replace(/,/g, "");
+
+      if (i === 2) {
+        text = "'" + text; 
+      }
+
+      data.push('"' + text + '"'); 
+    }
+  });
+
+  csv.push(data.join(","));
+});
+
+
+  let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+  let link = document.createElement("a");
+  link.href = URL.createObjectURL(csvFile);
+  link.download = "queries.csv";
+  link.click();
+}
+</script>
+
+
 
 </body>
 </html>

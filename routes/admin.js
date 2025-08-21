@@ -1,5 +1,5 @@
 const express = require('express');
-const { getadminSignup, postadminSignup, postadminLogin, getAdminDash, getadminSignout, getChangePassword, postchangePassword, getForgetPass } = require('../controllers/adminAuth');
+const { getadminSignup, postadminSignup, postadminLogin, getAdminDash, getadminSignout, getChangePassword, postchangePassword, getForgetPass, postForgetPass, verifyOtp, resetForgetPassword } = require('../controllers/adminAuth');
 const { postUser, getManageQuery, deleteQuery } = require('../controllers/userAuth');
 const router = express.Router();
 
@@ -17,7 +17,9 @@ router.get('/change-password', getChangePassword);
 router.post('/change-password', postchangePassword);
 
 router.get('/forget-password', getForgetPass);
-
+router.post('/forget-password', postForgetPass);
+router.post('/verify-otp', verifyOtp);
+router.post('/reset-password', resetForgetPassword);
 
 
 module.exports = router;

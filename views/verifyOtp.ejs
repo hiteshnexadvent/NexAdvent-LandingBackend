@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verify OTP</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #56ab2f, #a8e063); /* Green gradient */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 14px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      color: #2e7d32;
+    }
+
+    p {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="hidden"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 18px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #43a047;
+      outline: none;
+      box-shadow: 0 0 6px rgba(67, 160, 71, 0.4);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px 15px;
+      background: linear-gradient(90deg, #43a047, #66bb6a);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #388e3c, #4caf50);
+      transform: scale(1.03);
+    }
+
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .timer {
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: #555;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Verify OTP</h2>
+    <p>We have sent you an OTP on your registered email</p>
+
+    <form action="/admin/verify-otp" method="POST">
+      <input type="hidden" name="email" value="<%= email %>" />
+      <input type="text" name="otp" placeholder="Enter OTP" required />
+      <button type="submit">Verify OTP</button>
+    </form>
+  </div>
+
+</body>
+</html>

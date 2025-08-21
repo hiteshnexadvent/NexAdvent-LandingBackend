@@ -1,5 +1,6 @@
 const adminMong = require('../models/Admin_Mong');
 const bcrypt = require('bcrypt');
+const forgetOtp = require('../utils/forgetPass');
 
 
 exports.getadminSignup = (req, res) => {
@@ -154,6 +155,80 @@ exports.postchangePassword = async (req, res) => {
 exports.getForgetPass = async (req, res) => {
     return res.render('forgetPass');
 }
+
+exports.postForgetPass = async (req, res) => {
+    
+    try {
+        
+        const { email } = req.body;
+
+        const existadmin = await adminMong.findOne({ email });
+
+        if (!existadmin) {
+            return res.send('<script>alert("Admin not exist"); window.history.back();</script>');
+        }
+        
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const otpExpires = Date.now() + 5 * 60 * 1000;
+
+        existadmin.otp = otp;
+        existadmin.otpExpires = otpExpires;
+        await existadmin.save();
+
+        await forgetOtp(email, otp);
+
+        return res.render('verifyOtp', { email });
+
+    } catch (error) {
+        return res.send(error.message);
+    }
+
+}
+
+exports.verifyOtp = async (req, res) => {
+
+    try {
+        
+        const { email, otp } = req.body;
+        const admin = await adminMong.findOne({ email });
+
+        if (!admin || admin.otp?.toString() !== otp || admin.otpExpires < Date.now()) {
+            return res.send('<script>alert("Invalid or expired OTP"); window.history.back();</script>');
+        }
+
+        return res.render('resetForgetPass', { email });
+
+    } catch (error) {
+        return res.send('<script>alert("Something went wrong"); window.history.back();</script>');
+    }
+    
+}
+
+exports.resetForgetPassword = async (req, res) => {
+    
+    const { email, password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+        return res.send('<script>alert("Passwords do not match"); window.history.back();</script>');
+    }
+
+    const admin = await adminMong.findOne({ email });
+
+    if (!admin) {
+        return res.send('<script>alert("Admin not found"); window.location="/admin/forget";</script>');
+    }
+
+    const hashedPass = await bcrypt.hash(password, 10);
+    admin.pass = hashedPass;
+    admin.otp = undefined;
+    admin.otpExpires = undefined;
+
+    await admin.save();
+
+    return res.send('<script>alert("Password changed successfully"); window.location="/";</script>');
+    
+}
+
 
 // --------------------------------- signout
 
