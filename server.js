@@ -61,6 +61,10 @@ app.get('/', (req, res) => {
     res.render('adminLogin');
 })
 
+app.get("/ping", (req, res) => {
+  res.send("OK");
+});
+
 app.listen(process.env.PORT, () => {
     console.log('Server is started');
 })
